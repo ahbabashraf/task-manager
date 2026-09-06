@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Task Manager
+{% endblock %}
+
+
+{% block content %}
+
+<div class="app-card">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>My Tasks</h2>
+
+            <p>Add and manage your daily tasks.</p>
+
+        </div>
+
+
+        <div class="task-count">
+
+            <strong>{{ tasks|length }}</strong>
+
+            <span>
+                {% if tasks|length == 1 %}
+                    Task
+                {% else %}
+                    Tasks
+                {% endif %}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="title"
+            placeholder="What do you need to do?"
+            required
+        >
+
+        <button type="submit">
+            Add Task
+        </button>
+
+    </form>
+
+
+    <div class="task-list">
+
+        {% if tasks %}
+
+            {% for task in tasks %}
+
+                <div class="task">
+
+                    <div class="task-info">
+
+                        <span
+                            class="{% if task.completed %}completed{% endif %}"
+                        >
+                            {{ task.title }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-actions">
+
+                        <a
+                            class="complete-link"
+                            href="{{ url_for(
+                                'main.complete',
+                                task_id=task.id
+                            ) }}"
+                        >
+
+                            {% if task.completed %}
+                                Undo
+                            {% else %}
+                                Complete
+                            {% endif %}
+
+                        </a>
+
+
+                        <a
+                            class="delete-link"
+                            href="{{ url_for(
+                                'main.delete',
+                                task_id=task.id
+                            ) }}"
+                        >
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <h3>No tasks yet</h3>
+
+                <p>
+                    Add your first task using the field above.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

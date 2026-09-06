@@ -1,0 +1,37 @@
+services:
+
+  web:
+    build: .
+    container_name: task-manager-app
+    ports:
+      - "5001:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: taskuser
+      DB_PASSWORD: taskpassword
+      DB_NAME: taskmanager
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: task-manager-db
+    environment:
+      MYSQL_DATABASE: taskmanager
+      MYSQL_USER: taskuser
+      MYSQL_PASSWORD: taskpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "taskuser", "-ptaskpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+volumes:
+  db-data:

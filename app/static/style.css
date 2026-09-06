@@ -1,0 +1,476 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: #f4f6f8;
+    color: #273142;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+header {
+    background: #172033;
+    color: #ffffff;
+
+    border-bottom: 1px solid #101827;
+}
+
+
+.header-content {
+    max-width: 850px;
+    margin: 0 auto;
+
+    padding: 24px 25px;
+}
+
+
+header h1 {
+    margin: 0;
+
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+
+header p {
+    margin: 5px 0 0;
+
+    color: #b8c1cf;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   Main
+========================= */
+
+main {
+    width: 100%;
+    max-width: 850px;
+
+    margin: 38px auto;
+    padding: 0 25px;
+
+    flex: 1;
+}
+
+
+/* =========================
+   Main Application Card
+========================= */
+
+.app-card {
+    background: #ffffff;
+
+    border: 1px solid #e0e5eb;
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 3px 12px rgba(23, 32, 51, 0.06);
+}
+
+
+/* =========================
+   Section Header
+========================= */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+
+.section-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+
+.section-header p {
+    margin: 5px 0 0;
+
+    color: #7b8492;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   Task Count
+========================= */
+
+.task-count {
+    min-width: 52px;
+
+    padding: 6px 9px;
+
+    border: 1px solid #dce3ed;
+    border-radius: 6px;
+
+    background: #f3f6fa;
+
+    text-align: center;
+}
+
+
+.task-count strong {
+    display: block;
+
+    color: #4569ad;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+.task-count span {
+    display: block;
+
+    margin-top: 1px;
+
+    color: #8993a1;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+
+/* =========================
+   Add Task Form
+========================= */
+
+form {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+
+input {
+    flex: 1;
+    min-width: 0;
+
+    padding: 12px 14px;
+
+    border: 1px solid #ccd3dc;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #273142;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+input::placeholder {
+    color: #9aa3af;
+}
+
+
+input:focus {
+    border-color: #5275bd;
+
+    box-shadow:
+        0 0 0 3px rgba(82, 117, 189, 0.10);
+}
+
+
+/* =========================
+   Add Button
+========================= */
+
+button {
+    padding: 12px 19px;
+
+    border: 1px solid #3f61a8;
+    border-radius: 6px;
+
+    background: #4a6fbd;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+button:hover {
+    background: #3f61a8;
+}
+
+
+/* =========================
+   Task List
+========================= */
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+
+/* =========================
+   Individual Task
+========================= */
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 15px 16px;
+
+    border: 1px solid #e1e5ea;
+    border-radius: 7px;
+
+    background: #ffffff;
+}
+
+
+.task:hover {
+    border-color: #cfd6df;
+}
+
+
+/* =========================
+   Task Text
+========================= */
+
+.task-info {
+    min-width: 0;
+}
+
+
+.task-info span {
+    color: #354052;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+
+/* =========================
+   Task Actions
+========================= */
+
+.task-actions {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    gap: 15px;
+}
+
+
+.task-actions a {
+    font-size: 13px;
+    font-weight: 500;
+
+    text-decoration: none;
+}
+
+
+.complete-link {
+    color: #4569ad;
+}
+
+
+.complete-link:hover {
+    text-decoration: underline;
+}
+
+
+.delete-link {
+    color: #a05252;
+}
+
+
+.delete-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   Completed Task
+========================= */
+
+.completed {
+    color: #9aa2ad !important;
+
+    text-decoration: line-through;
+}
+
+
+/* =========================
+   Empty State
+========================= */
+
+.empty-state {
+    padding: 34px 20px;
+
+    border: 1px dashed #d5dbe3;
+    border-radius: 8px;
+
+    background: #fafbfc;
+
+    text-align: center;
+}
+
+
+.empty-icon {
+    width: 38px;
+    height: 38px;
+
+    margin: 0 auto 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e9eef6;
+    color: #5271ad;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #3c4655;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.empty-state p {
+    margin: 6px 0 0;
+
+    color: #8a94a2;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    padding: 18px 20px;
+
+    text-align: center;
+
+    color: #98a1ae;
+
+    font-size: 12px;
+}
+
+
+footer p {
+    margin: 0;
+}
+
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+
+    .header-content {
+        padding: 22px 20px;
+    }
+
+
+    header h1 {
+        font-size: 23px;
+    }
+
+
+    main {
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+
+    .app-card {
+        padding: 20px;
+    }
+
+
+    .section-header {
+        align-items: flex-start;
+    }
+
+
+    form {
+        flex-direction: column;
+    }
+
+
+    button {
+        width: 100%;
+    }
+
+
+    .task {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .task-actions {
+        width: 100%;
+    }
+
+}
