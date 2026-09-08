@@ -1,3 +1,4 @@
+# OIDC test after thumbprint update
 name: CI
 
 on:
