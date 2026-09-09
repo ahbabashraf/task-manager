@@ -1,11 +1,9 @@
-# OIDC test after thumbprint update
 name: CI
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -15,9 +13,7 @@ permissions:
   contents: read
 
 jobs:
-
   build-and-push:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -33,12 +29,11 @@ jobs:
             | jq -r '.value')
 
           python3 -c '
+          import sys
           import base64
           import json
-          import sys
 
           token = sys.argv[1]
-
           payload = token.split(".")[1]
           payload += "=" * (-len(payload) % 4)
 
@@ -46,18 +41,15 @@ jobs:
               base64.urlsafe_b64decode(payload)
           )
 
-          for key in [
-              "iss",
-              "aud",
-              "sub",
-              "repository",
-              "repository_id",
-              "repository_owner",
-              "repository_owner_id",
-              "ref",
-              "event_name"
-          ]:
-              print(f"{key}: {claims.get(key)}")
+          print("iss:", claims.get("iss"))
+          print("aud:", claims.get("aud"))
+          print("sub:", claims.get("sub"))
+          print("repository:", claims.get("repository"))
+          print("repository_id:", claims.get("repository_id"))
+          print("repository_owner:", claims.get("repository_owner"))
+          print("repository_owner_id:", claims.get("repository_owner_id"))
+          print("ref:", claims.get("ref"))
+          print("event_name:", claims.get("event_name"))
           ' "$TOKEN"
 
       - name: Check AWS-specific OIDC claims
@@ -68,12 +60,11 @@ jobs:
             | jq -r '.value')
 
           python3 -c '
+          import sys
           import base64
           import json
-          import sys
 
           token = sys.argv[1]
-
           payload = token.split(".")[1]
           payload += "=" * (-len(payload) % 4)
 
@@ -81,17 +72,15 @@ jobs:
               base64.urlsafe_b64decode(payload)
           )
 
-          print("AWS-specific claims:")
+          print(
+              "https://aws.amazon.com/tags:",
+              claims.get("https://aws.amazon.com/tags", "NOT PRESENT")
+          )
 
-          for key in [
-              "https://aws.amazon.com/tags",
-              "https://aws.amazon.com/roles"
-          ]:
-              if key in claims:
-                  print(f"{key}: PRESENT")
-                  print(claims[key])
-              else:
-                  print(f"{key}: NOT PRESENT")
+          print(
+              "https://aws.amazon.com/roles:",
+              claims.get("https://aws.amazon.com/roles", "NOT PRESENT")
+          )
           ' "$TOKEN"
 
       - name: Test AWS STS directly
@@ -104,7 +93,7 @@ jobs:
           echo "$TOKEN" > /tmp/github-oidc-token
 
           aws sts assume-role-with-web-identity \
-            --role-arn arn:aws:iam::228235827083:role/TaskManagerDeployRole \
+            --role-arn arn:aws:iam::228235827083:role/GitHubOIDCTestRole \
             --role-session-name github-actions-test \
             --web-identity-token file:///tmp/github-oidc-token \
             --duration-seconds 900 \
@@ -114,7 +103,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6.2.4
         with:
-          role-to-assume: arn:aws:iam::228235827083:role/TaskManagerDeployRole
+          role-to-assume: arn:aws:iam::228235827083:role/GitHubOIDCTestRole
           aws-region: ap-south-1
           audience: sts.amazonaws.com
 
