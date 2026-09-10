@@ -19,7 +19,8 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::228235827083:role/TaskManagerGitHubActionsRole
           aws-region: ap-south-1
-
+          role-duration-seconds: 900
+          
       - uses: aws-actions/amazon-ecr-login@v2
 
       - run: |
