@@ -5,7 +5,6 @@ on:
     branches: [main]
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
@@ -16,39 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check GitHub OIDC claims
-        run: |
-          TOKEN=$(curl -sS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
-            | python3 -c "import sys,json; print(json.load(sys.stdin)['value'])")
-
-          export TOKEN
-
-          python3 -c "
-          import base64
-          import json
-          import os
-
-          token = os.environ['TOKEN']
-
-          payload = token.split('.')[1]
-          payload += '=' * (-len(payload) % 4)
-
-          claims = json.loads(
-              base64.urlsafe_b64decode(payload)
-          )
-
-          print('iss:', claims.get('iss'))
-          print('aud:', claims.get('aud'))
-          print('sub:', claims.get('sub'))
-          print('job_workflow_ref:', claims.get('job_workflow_ref'))
-          "
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::228235827083:role/TaskManagerGitHubOIDCTestRole
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
       - name: Login to Amazon ECR
