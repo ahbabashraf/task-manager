@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Deploy
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +31,24 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag task-manager:latest 228235827083.dkr.ecr.ap-south-1.amazonaws.com/task-manager:${{ github.sha }}
+          docker tag task-manager:latest \
+          228235827083.dkr.ecr.ap-south-1.amazonaws.com/task-manager:${{ github.sha }}
 
       - name: Push Docker image
         run: |
-          docker push 228235827083.dkr.ecr.ap-south-1.amazonaws.com/task-manager:${{ github.sha }}
+          docker push \
+          228235827083.dkr.ecr.ap-south-1.amazonaws.com/task-manager:${{ github.sha }}
+
+      - name: Deploy to EC2
+        run: |
+          aws ssm send-command \
+            --instance-ids "i-019c17759788a9fec" \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=[
+              "cd /home/ubuntu/task-manager",
+              "export IMAGE_TAG=${{ github.sha }}",
+              "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 228235827083.dkr.ecr.ap-south-1.amazonaws.com",
+              "docker compose -f docker-compose.ec2.yml pull web",
+              "docker compose -f docker-compose.ec2.yml up -d web"
+            ]' \
+            --region ap-south-1
